@@ -1,2 +1,64 @@
 # nginx-podman
-Podman deployment for NGINX
+
+| License | Versioning | Build |
+| ------- | ---------- | ----- |
+| [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) | [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release) | [![Build status](https://ci.appveyor.com/api/projects/status/ls39uu14b4dyelgu/branch/master?svg=true)](https://ci.appveyor.com/project/nikAizuddin/nginx-podman/branch/master) |
+
+Podman deployment for NGINX.
+
+
+## Prerequisites
+
+Build Sphinx image:
+```
+podman build -t extra2000/sphinx .
+```
+
+
+## How to build docs into HTML
+
+**NOTE:** The `chcon` commands are for SELinux platforms only.
+
+Allow `./docs` to be mounted into Podman container:
+```
+chcon -R -v -t container_file_t ./docs
+```
+
+Create `./output` and `docs/build` directories to store rendered HTML output and allow the directory to be mounted into Podman container:
+```
+mkdir -pv output docs/build
+chcon -R -v -t container_file_t ./output docs/build
+```
+
+Build docs:
+```
+podman run -it --rm --network none -v ./docs:/srv/docs:ro -v ./output:/srv/docs/build:rw extra2000/sphinx make clean html
+```
+
+
+## How to deploy docs
+
+Import SELinux Security Policy for `httpd` container:
+```
+sudo semodule -i docs_nginx_pod.cil /usr/share/udica/templates/{base_container.cil,net_container.cil}
+```
+
+Create `no-internet` network:
+```
+podman network create no-internet --internal
+```
+
+Deploy docs:
+```
+podman run --rm --network no-internet -p 18080:80 -v ./output/html:/usr/local/apache2/htdocs:ro --security-opt label=type:docs_nginx_pod.process docker.io/library/httpd:2.4
+```
+
+To deploy docs using pod, create pod file:
+```
+cp -v docs-nginx-pod.yaml{.example,}
+```
+
+Then, deploy docs using pod:
+```
+podman play kube --network no-internet docs-nginx-pod.yaml
+```
