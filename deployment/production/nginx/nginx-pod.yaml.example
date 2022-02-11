@@ -1,0 +1,69 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: nginx-pod
+  name: nginx-pod
+  annotations:
+    seccomp.security.alpha.kubernetes.io/pod: localhost/default.json
+spec:
+  restartPolicy: OnFailure
+  hostNetwork: true
+  containers:
+  - name: srv01
+    image: docker.io/nginx:1.21
+    securityContext:
+      allowPrivilegeEscalation: false
+      privileged: false
+      capabilities:
+        add: []
+        drop:
+        - CAP_MKNOD
+        - CAP_NET_RAW
+        - CAP_AUDIT_WRITE
+      seLinuxOptions:
+        type: nginx.process
+    resources:
+      requests:
+        memory: 1000Mi
+        cpu: 1000m
+      limits:
+        memory: 1000Mi
+        cpu: 1000m
+    volumeMounts:
+    - mountPath: /etc/nginx/conf.d
+      name: nginx-confd
+      readOnly: true
+    - mountPath: /etc/nginx/ssl-params.conf
+      name: nginx-ssl-params-conf
+      readOnly: true
+    - mountPath: /etc/nginx/ssl/dhparam.pem
+      name: nginx-ssl-dhparam
+      readOnly: true
+    - mountPath: /etc/nginx/ssl/server.crt
+      name: nginx-server-crt
+      readOnly: true
+    - mountPath: /etc/nginx/ssl/server.key
+      name: nginx-server-key
+      readOnly: true
+    - mountPath: /var/log/nginx
+      name: nginx-logs
+  volumes:
+  - name: nginx-confd
+    hostPath:
+      path: ./configs/conf.d
+  - name: nginx-ssl-params-conf
+    hostPath:
+      path: ./configs/ssl-params.conf
+  - name: nginx-ssl-dhparam
+    hostPath:
+      path: ./secrets/dhparam.pem
+  - name: nginx-server-crt
+    hostPath:
+      path: ./secrets/certs/output/nginx-server.crt
+  - name: nginx-server-key
+    hostPath:
+      path: ./secrets/certs/output/nginx-server.key
+  - name: nginx-logs
+    persistentVolumeClaim:
+      claimName: nginx-logs
