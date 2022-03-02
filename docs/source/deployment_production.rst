@@ -160,19 +160,19 @@ Create SELinux security policy:
 
 .. code-block:: bash
 
-    cp -v selinux/nginx.cil{.example,}
+    cp -v selinux/nginx_podman.cil{.example,}
 
 Load SELinux security policy:
 
 .. code-block:: bash
 
-    sudo semodule -i selinux/nginx.cil /usr/share/udica/templates/base_container.cil
+    sudo semodule -i selinux/nginx_podman.cil /usr/share/udica/templates/base_container.cil
 
 Verify that the SELinux module exists:
 
 .. code-block:: bash
 
-    sudo semodule --list | grep -e "nginx"
+    sudo semodule --list | grep -e "nginx_podman"
 
 Deploy NGINX:
 
