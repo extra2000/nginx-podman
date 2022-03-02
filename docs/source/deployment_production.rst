@@ -156,6 +156,12 @@ Create pod file:
 
     cp -v nginx-pod.yaml{.example,}
 
+Create SELinux security policy:
+
+.. code-block:: bash
+
+    cp -v selinux/nginx.cil{.example,}
+
 Load SELinux security policy:
 
 .. code-block:: bash
