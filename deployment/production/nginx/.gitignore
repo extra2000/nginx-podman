@@ -16,4 +16,7 @@ configs/*
 configs/conf.d/*
 !configs/conf.d/*.example
 
+selinux/*
+!selinux/*.example
+
 nginx-pod.yaml
