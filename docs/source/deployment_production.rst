@@ -142,6 +142,7 @@ Create config files:
     cp -v configmaps/nginx.yaml{.example,}
     cp -v configs/conf.d/default.conf{.example,}
     cp -v configs/conf.d/ssl.conf{.example,}
+    cp -v configs/nginx.conf{.example,}
     cp -v configs/ssl-params.conf{.example,}
 
 Allow the following files to be mounted into container:
