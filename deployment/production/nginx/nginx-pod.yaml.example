@@ -37,8 +37,14 @@ spec:
     - mountPath: /etc/nginx/conf.d
       name: nginx-confd
       readOnly: true
+    - mountPath: /etc/nginx/conf.stream.d
+      name: nginx-confd-stream
+      readOnly: true
     - mountPath: /etc/nginx/ssl-params.conf
       name: nginx-ssl-params-conf
+      readOnly: true
+    - mountPath: /etc/nginx/ssl-params-stream.conf
+      name: nginx-ssl-params-stream-conf
       readOnly: true
     - mountPath: /etc/nginx/ssl/dhparam.pem
       name: nginx-ssl-dhparam
@@ -58,9 +64,15 @@ spec:
   - name: nginx-confd
     hostPath:
       path: ./configs/conf.d
+  - name: nginx-confd-stream
+    hostPath:
+      path: ./configs/conf.stream.d
   - name: nginx-ssl-params-conf
     hostPath:
       path: ./configs/ssl-params.conf
+  - name: nginx-ssl-params-stream-conf
+    hostPath:
+      path: ./configs/ssl-params-stream.conf
   - name: nginx-ssl-dhparam
     hostPath:
       path: ./secrets/dhparam.pem

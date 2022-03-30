@@ -1,0 +1,11 @@
+server {
+    listen 0.0.0.0:22222;
+    listen [::]:22222;
+
+    ssl_certificate /etc/nginx/ssl/server.crt;
+    ssl_certificate_key /etc/nginx/ssl/server.key;
+
+    include /etc/nginx/ssl-params-stream.conf;
+
+    proxy_pass 127.0.0.1:22;
+}

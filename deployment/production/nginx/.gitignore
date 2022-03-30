@@ -16,6 +16,10 @@ configs/*
 configs/conf.d/*
 !configs/conf.d/*.example
 
+!configs/conf.stream.d/
+configs/conf.stream.d/*
+!configs/conf.stream.d/*.example
+
 selinux/*
 !selinux/*.example
 
