@@ -200,5 +200,5 @@ Create systemd files to run at startup:
 
     mkdir -pv ~/.config/systemd/user
     cd ~/.config/systemd/user
-    podman generate systemd --files --name nginx-pod
-    systemctl --user enable pod-nginx-pod.service container-nginx-pod-srv01.service
+    podman generate systemd --files --name nginx-pod-srv01
+    systemctl --user enable container-nginx-pod-srv01.service
