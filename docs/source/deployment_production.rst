@@ -144,6 +144,8 @@ Create config files:
     cp -v configs/conf.d/ssl.conf{.example,}
     cp -v configs/nginx.conf{.example,}
     cp -v configs/ssl-params.conf{.example,}
+    cp -v configs/ssl-params-stream.conf{.example,}
+    cp -v configs/conf.stream.d/ssh.conf{.example,}
 
 Allow the following files to be mounted into container:
 
